@@ -1,30 +1,26 @@
-import * as React from 'react';
+import * as React from "react";
 
-import TextField from '@material-ui/core/TextField';
-import Paper from '@material-ui/core/Paper';
-import MenuItem from '@material-ui/core/MenuItem';
+import TextField from "@material-ui/core/TextField";
+import Paper from "@material-ui/core/Paper";
+import MenuItem from "@material-ui/core/MenuItem";
 
 import { getMovieTitles } from "./movie-service";
 
 export function Search() {
-
-  const [value, setValue] = React.useState('');
+  const [value, setValue] = React.useState("");
   const [suggestions, setSuggestions] = React.useState<string[]>([]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
-    getMovieTitles(e.target.value)
-      .then(setSuggestions);
+    getMovieTitles(e.target.value).then(setSuggestions);
   };
 
-  const handleSelect = (idx: number) => {
-  };
+  const handleSelect = (idx: number) => {};
 
   const shouldShowSuggestions = suggestions.length > 0 && value.length > 2;
 
-
   return (
-    <div style={{ width: '400px' }}>
+    <div style={{ width: "400px" }}>
       <TextField
         fullWidth
         onChange={handleChange}
