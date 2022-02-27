@@ -1,18 +1,37 @@
 import * as React from "react";
 
+import { BehaviorSubject, Observable, switchMap, tap } from "rxjs";
+
 import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
 import MenuItem from "@material-ui/core/MenuItem";
 
-import { getMovieTitles } from "./movie-service";
+import { getMovieTitles, getMovieTitlesObs } from "./movie-service";
+
+const changes$ = new BehaviorSubject("");
 
 export function Search() {
   const [value, setValue] = React.useState("");
   const [suggestions, setSuggestions] = React.useState<string[]>([]);
 
+  React.useEffect(() => {
+    const subscription = changes$
+      .pipe(
+        tap<string>(console.log),
+        switchMap<string, Observable<string[]>>((s) => getMovieTitlesObs(s)),
+        tap<string[]>(setSuggestions)
+      )
+      .subscribe((_) => {
+        // turn on the spout
+      });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
-    getMovieTitles(e.target.value).then(setSuggestions);
+    const newValue = e.target.value;
+    setValue(newValue);
+    changes$.next(newValue);
   };
 
   const handleSelect = (idx: number) => {};
