@@ -1,11 +1,20 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import './index.css'
-import App from './App'
+// App.tsx
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-)
+import * as React from 'react';
+import { render } from 'react-dom';
+
+import { Search } from './Search';
+
+import './styles.css';
+
+function App() {
+  return (
+    <div className="App">
+      <Search
+      />
+    </div>
+  );
+}
+
+const rootElement = document.getElementById('root');
+render(<App />, rootElement);
