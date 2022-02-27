@@ -4,12 +4,17 @@ import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 
-export function Search<S>() {
+import { getMovieTitles } from "./movie-service";
+
+export function Search() {
 
   const [value, setValue] = React.useState('');
-  const [suggestions, setSuggestions] = React.useState<S[]>([]);
+  const [suggestions, setSuggestions] = React.useState<string[]>([]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+    getMovieTitles(e.target.value)
+      .then(setSuggestions);
   };
 
   const handleSelect = (idx: number) => {
@@ -33,7 +38,7 @@ export function Search<S>() {
               key={`suggestion-${idx}`}
               onClick={() => handleSelect(idx)}
             >
-              {/* {renderSuggestion(suggestion)} */}
+              {suggestion}
             </MenuItem>
           ))}
         </Paper>
