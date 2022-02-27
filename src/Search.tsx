@@ -1,12 +1,12 @@
 import * as React from "react";
 
-import { BehaviorSubject, Observable, switchMap, tap } from "rxjs";
+import { BehaviorSubject } from "rxjs";
 
 import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
 import MenuItem from "@material-ui/core/MenuItem";
 
-import { getMovieTitles, getMovieTitlesObs } from "./movie-service";
+import { moviesByQueryObs } from "./movie-service";
 
 const changes$ = new BehaviorSubject("");
 
@@ -15,15 +15,7 @@ export function Search() {
   const [suggestions, setSuggestions] = React.useState<string[]>([]);
 
   React.useEffect(() => {
-    const subscription = changes$
-      .pipe(
-        tap<string>(console.log),
-        switchMap<string, Observable<string[]>>((s) => getMovieTitlesObs(s)),
-        tap<string[]>(setSuggestions)
-      )
-      .subscribe((_) => {
-        // turn on the spout
-      });
+    const subscription = moviesByQueryObs(changes$).subscribe(setSuggestions);
 
     return () => subscription.unsubscribe();
   }, []);
