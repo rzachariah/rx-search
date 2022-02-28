@@ -1,5 +1,5 @@
 import axios from "axios";
-import { from, Observable, tap, switchMap } from "rxjs";
+import { from, Observable, tap, filter, switchMap } from "rxjs";
 
 import config from "./config";
 
@@ -29,7 +29,9 @@ export function getMovies(request: string): Promise<string[]> {
         console.error(data.Error);
         return [];
       }
-      return data.Search.map((movie) => movie.Title);
+      const movieTitles = data.Search.map((movie) => movie.Title);
+      console.log("movieTitles", movieTitles);
+      return movieTitles;
     })
     .catch((error) => {
       console.error(error);
@@ -39,12 +41,4 @@ export function getMovies(request: string): Promise<string[]> {
 
 export function getMoviesObs(request: string): Observable<string[]> {
   return from(getMovies(request));
-}
-
-export function moviesByQueryObs(
-  changes$: Observable<string>
-): Observable<string[]> {
-  return changes$.pipe(
-    switchMap<string, Observable<string[]>>((s) => getMoviesObs(s))
-  );
 }

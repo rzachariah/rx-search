@@ -1,4 +1,4 @@
-console.log("Importing mock");
+console.log("Importing config mock");
 
 const config: {
   baseUrl: string;
