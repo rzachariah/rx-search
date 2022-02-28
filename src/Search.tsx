@@ -6,7 +6,7 @@ import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
 import MenuItem from "@material-ui/core/MenuItem";
 
-import { moviesByQueryObs } from "./rx-queries";
+import { moviesByPrompts } from "./rx-queries";
 
 const changes$ = new BehaviorSubject("");
 
@@ -15,7 +15,7 @@ export function Search() {
   const [suggestions, setSuggestions] = React.useState<string[]>([]);
 
   React.useEffect(() => {
-    const subscription = moviesByQueryObs(changes$).subscribe(setSuggestions);
+    const subscription = moviesByPrompts(changes$).subscribe(setSuggestions);
 
     return () => subscription.unsubscribe();
   }, []);

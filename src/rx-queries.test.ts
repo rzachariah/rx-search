@@ -1,5 +1,5 @@
 import { TestScheduler } from "rxjs/testing";
-import { moviesByQueryObs } from "./rx-queries";
+import { moviesByPrompts } from "./rx-queries";
 import { of } from "rxjs";
 
 jest.mock("config");
@@ -8,7 +8,7 @@ jest.mock("./movie-service", () => ({
     of(["Indiana Jones", "Indiana Jones and the Temple of Doom"]),
 }));
 
-describe("moviesByQueryObs", () => {
+describe("moviesByPrompts", () => {
   let testScheduler: TestScheduler;
 
   beforeEach(() => {
@@ -19,7 +19,7 @@ describe("moviesByQueryObs", () => {
 
   // it("Should not make axios request without subscribing", () => {
   //   const subject = new BehaviorSubject("Indiana");
-  //   moviesByQueryObs(subject);
+  //   moviesByPrompts(subject);
   //   expect(axios.get).toHaveBeenCalledTimes(0);
   // });
 
@@ -27,7 +27,7 @@ describe("moviesByQueryObs", () => {
   //   testScheduler.run((helpers) => {
   //     const { cold, expectObservable } = helpers;
   //     const source$ = cold("a -", { a: "" });
-  //     const final$ = moviesByQueryObs(source$);
+  //     const final$ = moviesByPrompts(source$);
   //     const expected = "  -";
   //     expectObservable(final$).toBe(expected);
   //   });
@@ -37,7 +37,7 @@ describe("moviesByQueryObs", () => {
     testScheduler.run((helpers) => {
       const { cold, expectObservable } = helpers;
       const source$ = cold("-a-b-", { a: "I", b: "In" });
-      const final$ = moviesByQueryObs(source$);
+      const final$ = moviesByPrompts(source$);
       const expected = "-----";
       expectObservable(final$).toBe(expected);
     });
@@ -47,7 +47,7 @@ describe("moviesByQueryObs", () => {
     testScheduler.run((helpers) => {
       const { cold, expectObservable } = helpers;
       const source$ = cold("-a-b-c", { a: "I", b: "In", c: "Ind" });
-      const final$ = moviesByQueryObs(source$);
+      const final$ = moviesByPrompts(source$);
       const expected = "-----z";
       expectObservable(final$).toBe(expected, {
         z: ["Indiana Jones", "Indiana Jones and the Temple of Doom"],
