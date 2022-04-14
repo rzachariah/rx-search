@@ -48,7 +48,7 @@ describe("moviesByPrompts", () => {
       const { cold, expectObservable } = helpers;
       const source$ = cold("-a-b-c", { a: "I", b: "In", c: "Ind" });
       const final$ = moviesByPrompts(source$);
-      const expected = "-----z";
+      const expected = "----- 500ms z"; // request is 500ms after valid prompt
       expectObservable(final$).toBe(expected, {
         z: ["Indiana Jones", "Indiana Jones and the Temple of Doom"],
       });
